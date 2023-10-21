@@ -1,0 +1,110 @@
+<!--
+ * @Author: helloy 741161283@qq.com
+ * @Date: 2023-10-10 10:38:48
+ * @LastEditors: helloy 741161283@qq.com
+ * @LastEditTime: 2023-10-15 17:34:44
+ * @FilePath: \复习一下算法吧\1.归并排序.html
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      const arr = [3, 5, 8, 2, 5];
+
+      //   function sort(arr, left, right) {
+      //     // console.log('left, right: ', left, right);
+      //     if (left >= right) {
+      //       return;
+      //     }
+      //     const pivt = Math.floor((left + right) / 2);
+      //     sort(arr, left, pivt);
+      //     sort(arr, pivt + 1, right);
+      //     merge(arr, left, pivt, right);
+      //   }
+      //   let count = 0;
+      //   function merge(brr, left, pivt, right) {
+      //     let i = left;
+      //     let j = pivt + 1;
+      //     const temp = new Array(right - left + 1);
+      //     let index = 0;
+      //     while (i <= pivt && j <= right) {
+      //       if (brr[i] < brr[j]) {
+      //         temp[index] = brr[i];
+      //         i++;
+      //       } else {
+      //         temp[index] = brr[j];
+      //         j++;
+      //       }
+      //       index++;
+      //     }
+
+      //     while (i <= pivt) {
+      //       temp[index] = brr[i];
+      //       index++;
+      //       i++;
+      //     }
+
+      //     while (j <= right) {
+      //       temp[index] = brr[j];
+      //       index++;
+      //       j++;
+      //     }
+
+      //     for (let loopIndex = 0; loopIndex < temp.length; loopIndex++) {
+      //       brr[loopIndex + left] = temp[loopIndex];
+      //     }
+      //   }
+      //   sort(arr, 0, arr.length - 1);
+
+      function sort2(array, left, right, tempArr) {
+        if (left >= right) {
+          return 0;
+        }
+
+        const pivt = Math.floor((left + right) / 2);
+        const leftMergePairs = sort2(arr, left, pivt, tempArr);
+        const rightMergePairs = sort2(arr, pivt + 1, right, tempArr);
+        const mergePairs = merge2(arr, left, pivt, right, tempArr);
+
+        // 逆序对 要计算上次左边产生的  和 右边产生的  然后是 自己合并的时候产生的
+        return mergePairs + leftMergePairs + rightMergePairs;
+      }
+      let c = 0;
+      function merge2(arr, left, pivt, right, tempArr) {
+        for (let index = left; index <= right; index++) {
+          tempArr[index] = arr[index];
+        }
+
+        let i = left;
+        let j = pivt + 1;
+        let count = 0;
+
+        for (let k = left; k <= right; k++) {
+          if (i === pivt + 1) {
+            // 左无，右有
+            arr[k] = tempArr[j++];
+          } else if (j === right + 1) {
+            // 右无，左有
+            arr[k] = tempArr[i++];
+          } else if (tempArr[i] <= tempArr[j]) {
+            arr[k] = tempArr[i++];
+          } else {
+            count += pivt - i + 1;
+            c += pivt - i + 1;
+            arr[k] = tempArr[j++];
+          }
+        }
+        return count;
+      }
+      const count = sort2(arr, 0, arr.length - 1, arr.slice());
+      console.log(arr);
+      console.log(c);
+    </script>
+  </body>
+</html>

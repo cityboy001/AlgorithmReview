@@ -1,0 +1,142 @@
+<!--
+ * @Author: helloy 741161283@qq.com
+ * @Date: 2023-10-10 10:38:48
+ * @LastEditors: helloy 741161283@qq.com
+ * @LastEditTime: 2023-10-17 13:46:35
+ * @FilePath: \复习一下算法吧\1.归并排序.html
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <pre id="pre"></pre>
+    <script>
+      class MyNode {
+        left;
+        right;
+        value;
+        constructor(v) {
+          this.value = v;
+        }
+      }
+      class BST {
+        node;
+        size = 0;
+        add(v) {
+          if (!this.node) {
+            this.node = new MyNode(v);
+            this.size++;
+            return;
+          }
+          let current = this.node;
+          while (current !== null) {
+            if (current.value === v) {
+              return;
+            } else if (current.value > v) {
+              if (!current.left) {
+                current.left = new MyNode(v);
+                this.size++;
+                return;
+              }
+              current = current.left;
+            } else {
+              if (!current.right) {
+                current.right = new MyNode(v);
+                this.size++;
+                return;
+              }
+              current = current.right;
+            }
+          }
+        }
+        remove(v) {
+          if (!this.node) return;
+          let parent = null;
+          let current = this.node;
+
+          while (current.value !== v) {
+            parent = current;
+            if (current.value > v) {
+              current = current.left;
+            } else {
+              current = current.right;
+            }
+          }
+
+          if (!current.left && !current.right) {
+            if (!parent) {
+              this.node = null;
+            } else if (parent.left === v) {
+              parent.left = null;
+            } else if (parent.right === v) {
+              parent.right = null;
+            }
+          } else if (current.left && !current.right) {
+            //              9
+            //       5
+            //   3      7
+            // 1   4  6   8
+            //
+            //
+            if (!parent) {
+              this.node = current.left;
+              current.left = null;
+            } else if (parent.left.value === v) {
+              parent.left = current.left;
+              current.left = null;
+            } else if (parent.right.value === v) {
+              parent.right = current.left;
+              current.left = null;
+            }
+          } else if (!current.left && current.right) {
+            if (!parent) {
+              this.node = current.right;
+              current.right = null;
+            } else if (parent.left.value === v) {
+              parent.left = current.right;
+              current.right = null;
+            } else if (parent.right.value === v) {
+              parent.right = current.right;
+              current.right = null;
+            }
+          } else if (current.left && current.right) {
+            if (!current.right.left && !current.right.right) {
+              current.value = current.right.value;
+              current.right = null;
+            } else if (current.right.left) {
+              let parentMinEle = current.right;
+              let minEle = current.right.left;
+              while (minEle.left) {
+                parentMinEle = minEle;
+                minEle = minEle.left;
+              }
+              current.value = minEle.value;
+              parentMinEle.left = null;
+            } else if (current.right.right) {
+              current.value = current.right.value;
+              const tempRight = current.right;
+              current.right = current.right.right;
+              tempRight.right = null;
+            }
+          }
+        }
+      }
+      const bst =new BST();
+      bst.add(9);
+      bst.add(5);
+      bst.add(3);
+      bst.add(1);
+      bst.add(4);
+      bst.add(7);
+      bst.add(8);
+      bst.add(6);
+      bst.remove(5)
+      console.log(bst.node);
+    </script>
+  </body>
+</html>

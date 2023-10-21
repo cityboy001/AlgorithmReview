@@ -1,0 +1,119 @@
+<!--
+ * @Author: helloy 741161283@qq.com
+ * @Date: 2023-10-10 10:38:48
+ * @LastEditors: helloy 741161283@qq.com
+ * @LastEditTime: 2023-10-19 15:30:02
+ * @FilePath: \复习一下算法吧\1.归并排序.html
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <pre id="pre"></pre>
+    <script>
+      function searchBF(mainStr = "", partten = "") {
+        const mainStrLength = mainStr.length;
+        const parttenStrLength = partten.length;
+        for (let i = 0; i < mainStrLength; i++) {
+          if (mainStr.charAt(i) === partten.charAt(0)) {
+            let k = 1;
+            let matched = true;
+            while (k < parttenStrLength) {
+              if (mainStr.charAt(i + k) !== partten.charAt(k)) {
+                matched = false;
+                break;
+              }
+              k++;
+            }
+            if (matched) {
+              return i;
+            }
+          }
+        }
+      }
+
+      const i = searchBF("我的妈 啊 。你不会是骗我的吧", "a你不会");
+      console.log("i: ", i);
+
+      const arr = [
+        { value: 1, id: 1 },
+        { parent: 1, value: 3, id: 13 },
+        { parent: 1, value: 2, id: 12 },
+        { parent: 1, value: 1, id: 11 },
+        { parent: 1, value: 0, id: 10 },
+        { parent: 12, value: 121, id: 121 },
+        { parent: 12, value: 122, id: 122 },
+        { parent: 11, value: 116, id: 112 },
+        { parent: 121, value: 1112, id: 1112 },
+      ];
+      const obj = {};
+      arr.forEach((e) => {
+        if (!obj[e.id]) {
+          obj[e.id] = {
+            id: e.id,
+            parent: e.parent,
+            value: e.value,
+            children: [],
+          };
+        }
+        obj[e.id].value = e.value;
+
+        if (!e.parent) return;
+
+        if (!obj[e.parent]) {
+          obj[e.parent] = {
+            id: e.parent,
+            parent: undefined,
+            value: undefined,
+            children: [],
+          };
+        }
+        obj[e.parent].children.push(obj[e.id]);
+      });
+      console.log(obj[1]);
+
+      function isArray(ele) {
+        return Object.prototype.toString.call(ele) === "[object Array]";
+      }
+
+      function isObject(ele) {
+        return Object.prototype.toString.call(ele) === "[object Object]";
+      }
+
+      const a = { a: 1, b: [{ a: 1 }, 2], c: { b: { d: 1 } } };
+      function getPath(obj) {
+        const out = {};
+        function run(preFix = "", o) {
+          if (isArray(o)) {
+            o.forEach((e, i) => {
+              if (!isArray(e) && !isObject(e)) {
+                out[preFix + `[${i}]`] = e;
+              } else {
+                run(preFix + `[${i}]`, e);
+              }
+            });
+          }
+          if (isObject(o)) {
+            for (let key in o) {
+              let value = o[key];
+              if (!isArray(value) && !isObject(value)) {
+                out[preFix + `.${key}`] = value;
+              } else {
+                run(preFix + `.${key}`, value);
+              }
+            }
+          }
+        }
+        run("", obj);
+
+        return out;
+      }
+      console.log(getPath(a));
+    </script>
+  </body>
+</html>

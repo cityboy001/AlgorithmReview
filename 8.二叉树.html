@@ -1,0 +1,211 @@
+<!--
+ * @Author: helloy 741161283@qq.com
+ * @Date: 2023-10-10 10:38:48
+ * @LastEditors: helloy 741161283@qq.com
+ * @LastEditTime: 2023-10-16 20:44:05
+ * @FilePath: \复习一下算法吧\1.归并排序.html
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <pre id="pre"></pre>
+    <script>
+      const node = {
+        depth: 1,
+        value: 23,
+        left: {
+          value: 34,
+          left: {
+            value: 99,
+            left: {
+              value: 77,
+            },
+            right: {
+              value: 90,
+            },
+          },
+        },
+        right: {
+          value: 21,
+          left: {
+            value: 45,
+          },
+          right: {
+            value: 60,
+          },
+        },
+      };
+
+      function prevSort() {
+        const stack = [node];
+        const out = [];
+        while (stack.length) {
+          const ele = stack.pop();
+          out.push(ele.value);
+          if (ele.right) stack.push(ele.right);
+          if (ele.left) stack.push(ele.left);
+        }
+
+        return out;
+      }
+
+      function middleSort() {
+        const stack = [];
+        let current = node;
+        const out = [];
+        while (current || stack.length) {
+          console.log("current: ", current);
+          while (current) {
+            stack.push(current);
+            current = current.left;
+          }
+          const ele = stack.pop();
+          out.push(ele.value);
+          if (ele.right) current = ele.right;
+        }
+
+        return out;
+      }
+      // console.log("middleSort()11: ", middleSort());
+
+      // 后序遍历 只需要把前序遍历的结果反转一下就行了
+
+      // 获取二叉树的最大深度
+      function maxDepth() {
+        const stack = [node];
+        node.depth = 1;
+        const out = [];
+        let depth = 0;
+        while (stack.length) {
+          const ele = stack.pop();
+          out.push(ele.value);
+          depth = Math.max(ele.depth, depth);
+          if (ele.right) {
+            stack.push(ele.right);
+            ele.right.depth = ele.depth + 1;
+          }
+          if (ele.left) {
+            stack.push(ele.left);
+            ele.left.depth = ele.depth + 1;
+          }
+        }
+
+        return depth;
+      }
+      // console.log("maxDepth(): ", maxDepth());
+
+      // 从根节点到某个叶子节点是否存在路径值和=n的路径
+      function maxDepth(n) {
+        const stack = [node];
+        node.addValue = node.value;
+        const out = [];
+        while (stack.length) {
+          const ele = stack.pop();
+          out.push(ele.value);
+          if (ele.addValue === n) return true;
+          if (ele.right) {
+            stack.push(ele.right);
+            ele.right.addValue = ele.addValue + ele.right.value;
+          }
+
+          if (ele.left) {
+            stack.push(ele.left);
+            ele.left.addValue = ele.addValue + ele.left.value;
+          }
+        }
+
+        return false;
+      }
+      // console.log("maxDepth(): ", maxDepth(57));
+
+      // 翻转二叉树
+      function reverseTree() {
+        const stack = [node];
+        while (stack.length) {
+          const ele = stack.pop();
+          const temp = ele.left;
+          ele.left = ele.right;
+          ele.right = temp;
+          if (ele.right) {
+            stack.push(ele.right);
+          }
+
+          if (ele.left) {
+            stack.push(ele.left);
+          }
+        }
+      }
+      // reverseTree(node);
+      // console.log(JSON.stringify(node,undefined,2));
+      document.getElementById("pre").innerHTML = JSON.stringify(
+        node,
+        undefined,
+        2
+      );
+
+      // 检查两棵树是不是相同的两棵树
+      function isSameTree(tree1, tree2) {
+        const stack1 = [tree1];
+        const stack2 = [tree2];
+        while (true) {
+          if (!stack1.length && !stack2.length) return true;
+          const ele1 = stack1.pop();
+          const ele2 = stack2.pop();
+          if (ele1 && ele2) {
+            if (ele1.value !== ele2.value) return false;
+            if (ele1.right) {
+              stack1.push(ele1.right);
+            }
+
+            if (ele1.left) {
+              stack1.push(ele1.left);
+            }
+
+            if (ele2.right) {
+              stack2.push(ele2.right);
+            }
+
+            if (ele2.left) {
+              stack2.push(ele2.left);
+            }
+          } else if (ele1 || ele2) {
+            return false;
+          }
+        }
+      }
+      console.log(
+        isSameTree(node, {
+          depth: 1,
+          value: 23,
+          left: {
+            value: 34,
+            left: {
+              value: 99,
+              left: {
+                value: 77,
+              },
+              right: {
+                value: 90,
+              },
+            },
+          },
+          right: {
+            value: 21,
+            left: {
+              value: 45,
+            },
+            right: {
+              value: 60,
+            },
+          },
+        })
+      );
+    </script>
+  </body>
+</html>

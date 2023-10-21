@@ -1,0 +1,45 @@
+<!--
+ * @Author: helloy 741161283@qq.com
+ * @Date: 2023-10-10 10:38:48
+ * @LastEditors: helloy 741161283@qq.com
+ * @LastEditTime: 2023-10-20 16:19:21
+ * @FilePath: \复习一下算法吧\1.归并排序.html
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <pre id="pre"></pre>
+    <script>
+      const arr = [100, 200, 300, 400, 500, 600, 700, 800];
+      function canTransferToSortedArr(nums) {
+        // 一定要保证左边有序
+        // 3,4,2,3
+        let count = 0;
+        for (let i = 1; i < nums.length; i++) {
+          if (nums[i] < nums[i - 1]) {
+            count++;
+            if (count > 1) return false;
+            // 因为要保证左边有序
+            // 如果这里有i+1的判断 就会漏掉 3423的情况
+            if (i - 2 >= 0 && nums[i] > nums[i - 2]) {
+              nums[i] = nums[i - 1];
+            } else {
+              nums[i - 1] = nums[i];
+            }
+          }
+        }
+
+        return true;
+      }
+
+      // 4 1 2
+      // 3 2 3
+    </script>
+  </body>
+</html>

@@ -1,0 +1,61 @@
+<!--
+ * @Author: helloy 741161283@qq.com
+ * @Date: 2023-10-10 10:38:48
+ * @LastEditors: helloy 741161283@qq.com
+ * @LastEditTime: 2023-10-15 17:49:14
+ * @FilePath: \复习一下算法吧\1.归并排序.html
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      const arr = [1, 5, 9, 33, 55];
+      const target = 8;
+      function contains(arr, t) {
+        let left = 0;
+        let right = arr.length - 1;
+        while (left < right) {
+          const center = Math.floor((left + right) / 2);
+          if (arr[center] === t) {
+            return true;
+          } else if (center > t) {
+            right = center - 1;
+          } else {
+            left = center + 1;
+          }
+        }
+        return false;
+      }
+
+      // 查找第一个=8的元素下标
+      function contains2(arr, t) {
+        let left = 0;
+        let right = arr.length - 1;
+        while (left <= right) {
+          const center = Math.floor((left + right) / 2);
+          if (arr[center] === t) {
+            if (center === 0) {
+              return 0;
+            }
+            if (arr[center - 1] === t) {
+              right = center - 1;
+            } else {
+              return center;
+            }
+          } else if (center > t) {
+            right = center - 1;
+          } else {
+            left = center + 1;
+          }
+        }
+      }
+      console.log(contains2([8, 8, 8, 8, 8, 8, 89, 45], 8));
+    </script>
+  </body>
+</html>

@@ -1,0 +1,41 @@
+<!--
+ * @Author: helloy 741161283@qq.com
+ * @Date: 2023-10-10 10:38:48
+ * @LastEditors: helloy 741161283@qq.com
+ * @LastEditTime: 2023-10-13 10:02:01
+ * @FilePath: \复习一下算法吧\1.归并排序.html
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      const arr = [5, 8, 3, 4, 6, 1, 54, 8];
+      function count(arr) {
+        const max = Math.max(...arr);
+        const min = Math.min(...arr);
+        const brr = new Array(max - min + 1).fill(0);
+
+        arr.forEach((e, i) => {
+          brr[e - min] = brr[e - min] + 1;
+        });
+        for (let index = 1; index < brr.length; index++) {
+          brr[index] = brr[index - 1] + brr[index];
+        }
+        const out = new Array(arr.length);
+        arr.forEach((e,i)=>{
+          const index = brr[e-min]
+          out[index] = e
+          brr[e-min]--
+        })
+        return out
+      }
+      console.log(count(arr));
+    </script>
+  </body>
+</html>

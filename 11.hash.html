@@ -1,0 +1,107 @@
+<!--
+ * @Author: helloy 741161283@qq.com
+ * @Date: 2023-10-10 10:38:48
+ * @LastEditors: helloy 741161283@qq.com
+ * @LastEditTime: 2023-10-18 18:08:26
+ * @FilePath: \复习一下算法吧\1.归并排序.html
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <pre id="pre"></pre>
+    <script>
+      class Item {
+        value;
+        constructor(v) {
+          this.value = v;
+        }
+        isDeleted = false;
+      }
+
+      class HashSet {
+        size = 0;
+        hash(e = "") {
+          e = `${e}`;
+          let count = 0;
+          for (let i = 0; i < e.length; i++) {
+            count += e.charCodeAt(i);
+          }
+
+          return count;
+        }
+        data = new Array(10).fill(null);
+        add(e) {
+          if (this.contains(e)) return;
+          const hashValue = this.hash(e);
+          let index = hashValue % this.data.length;
+
+          while (this.data[index] && !this.data[index].isDeleted) {
+            index = (index + 1) % this.data.length;
+          }
+
+          this.data[index] = new Item(e);
+          this.size++;
+          console.log('this.size: ', this.size);
+
+          if (this.size === this.data.length / 2) {
+            this.resize(2 * this.data.length);
+          }
+        }
+        resize(length) {
+          const origin = this.data.slice();
+          this.data = new Array(length);
+          origin.forEach((e) => {
+            if (e && !e.isDeleted) {
+              this.add(e.value);
+            }
+          });
+        }
+        //3 47 65
+        remove(e) {
+          let index = this.hash(e) % this.data.length;
+          while (this.data[index] && this.data[index].value !== e) {
+            index = (index + 1) % this.data.length;
+          }
+
+          if (this.data[index]) {
+            this.data[index].isDeleted = true;
+            this.size--;
+          }
+        }
+        contains(e) {
+          let index = this.hash(e) % this.data.length;
+
+          while (this.data[index] && this.data[index].value !== e) {
+            index = (index + 1) % this.data.length;
+          }
+
+          return !!this.data[index];
+        }
+      }
+      const hash = new HashSet();
+      hash.add(1);
+      hash.add(5);
+      hash.add(12);
+      console.log("hash: ", hash);
+      console.log("hash: ", hash.contains(1));
+      console.log("hash: ", hash.contains(12));
+
+      // console.log("hash.hash(10): ", hash.hash(10) % hash.data.length);
+      console.log("hash.hash(10): ", hash.hash(1) % hash.data.length);
+      // console.log("hash.hash(10): ", hash.hash(2) % hash.data.length);
+      // console.log("hash.hash(10): ", hash.hash(3) % hash.data.length);
+      // console.log("hash.hash(10): ", hash.hash(5) % hash.data.length);
+      // console.log("hash.hash(10): ", hash.hash(9) % hash.data.length);
+      // console.log("hash.hash(10): ", hash.hash(8) % hash.data.length);
+      // console.log("hash.hash(10): ", hash.hash(14) % hash.data.length);
+      console.log("hash.hash(10): ", hash.hash(12) % hash.data.length);
+      // console.log("hash.hash(10): ", hash.hash(11) % hash.data.length);
+    </script>
+  </body>
+</html>

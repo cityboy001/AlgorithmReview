@@ -1,0 +1,45 @@
+<!--
+ * @Author: helloy 741161283@qq.com
+ * @Date: 2023-10-10 10:38:48
+ * @LastEditors: helloy 741161283@qq.com
+ * @LastEditTime: 2023-10-20 16:39:27
+ * @FilePath: \复习一下算法吧\1.归并排序.html
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <pre id="pre"></pre>
+    <script>
+      const arr = [0, 1, 2, 3, 4, 6, 8, 9, 10,15,568];
+      function getMinBlock(nums) {
+        const result = [];
+        let index = 1;
+        let tempResult = [index - 1];
+        while (index < nums.length) {
+          const element = nums[index];
+          const prevElement = nums[index - 1];
+          if (element - 1 === prevElement) {
+            tempResult[1] = index;
+          } else {
+            result.push(tempResult);
+            tempResult = [index];
+          }
+
+          index++;
+        }
+        result.push(tempResult);
+
+        return result;
+      }
+      console.log(getMinBlock(arr));
+      // 4 1 2
+      // 3 2 3
+    </script>
+  </body>
+</html>

@@ -1,0 +1,157 @@
+<!--
+ * @Author: helloy 741161283@qq.com
+ * @Date: 2023-10-10 10:38:48
+ * @LastEditors: helloy 741161283@qq.com
+ * @LastEditTime: 2023-10-18 14:13:29
+ * @FilePath: \复习一下算法吧\1.归并排序.html
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <pre id="pre"></pre>
+    <script>
+      class Heap {
+        data = [];
+        getLeftChildIndex(index) {
+          return index * 2 + 1;
+        }
+        getRightChildIndex(index) {
+          return index * 2 + 2;
+        }
+        getParentIndex(index) {
+          if (index === 0) {
+            throw new Error(1);
+          }
+
+          return Math.floor((index - 1) / 2);
+        }
+        shiftUp(arr, index) {
+          while (index > 0) {
+            const value = arr[index];
+            const parentValue = arr[this.getParentIndex(index)];
+
+            if (value <= parentValue) {
+              return;
+            }
+
+            arr[index] = parentValue;
+            arr[this.getParentIndex(index)] = value;
+
+            index = this.getParentIndex(index);
+          }
+        }
+        shiftDown(arr, index) {
+          while (this.getLeftChildIndex(index) < arr.length) {
+            const leftChildIndex = this.getLeftChildIndex(index);
+            const rightChildIndex = this.getRightChildIndex(index);
+            const leftValue = arr[leftChildIndex];
+            const value = arr[index];
+            if (rightChildIndex < arr.length) {
+              const rightValue = arr[rightChildIndex];
+              if (value > leftValue && value > rightValue) return;
+              if (value < leftValue || value < rightValue) {
+                const childIndex =
+                  leftValue > rightValue ? leftChildIndex : rightChildIndex;
+                arr[childIndex] = value;
+                arr[index] = Math.max(leftValue, rightValue);
+                index = childIndex;
+              }
+            } else {
+              if (value < leftValue) {
+                arr[leftChildIndex] = value;
+                arr[index] = leftValue;
+              }
+              return;
+            }
+          }
+        }
+        add(v) {
+          this.data.push(v);
+          let index = this.data.length - 1;
+          this.shiftUp(this.data, index);
+        }
+        removeMax() {
+          const v = this.data[this.data.length - 1];
+          const max = this.data[0];
+          this.data[0] = v;
+          this.data.pop();
+
+          if (this.data.length) this.shiftDown(this.data, 0);
+
+          return max;
+        }
+      }
+
+      /*
+           415
+       30       9
+      8  10   5    7
+
+       */
+      const h = new Heap();
+      h.add(9);
+      h.add(8);
+      h.add(8);
+      h.add(10);
+      h.add(415);
+      h.add(30);
+      h.add(5);
+      h.add(7);
+      console.log(h.removeMax());
+      console.log(h.removeMax());
+      console.log(h.removeMax());
+      console.log(h.removeMax());
+      console.log(h.removeMax());
+      console.log(h.removeMax());
+      console.log(h.removeMax());
+      console.log(h.removeMax());
+      // console.log(h.data);
+      // console.log(h.data);
+      // h.removeMax()
+      // console.log(h.data);
+      // h.removeMax()
+      // console.log(h.data);
+      // h.removeMax()
+      // console.log(h.data);
+      // h.removeMax()
+      // console.log(h.data);
+      // h.removeMax()
+      // console.log(h.data);
+      // while (h.data.length) {
+      //   console.log(h.removeMax());
+      // }
+
+      h.add(8);
+      h.add(5);
+      h.add(7);
+      h.removeMax();
+      console.log(h.data);
+
+      // 找到第k小的的数
+      function getKMaxNum(arr = [], k) {
+        const priorityQueue = new Heap();
+        for (let index = 0; index < k; index++) {
+          priorityQueue.add(arr[index]);
+        }
+        console.log("priorityQueue: ", priorityQueue);
+
+        for (let index = k; index < arr.length; index++) {
+          if (arr[index] < priorityQueue.data[0]) {
+            priorityQueue.removeMax();
+            priorityQueue.add(arr[index]);
+          }
+        }
+
+        return priorityQueue.removeMax();
+      }
+
+      console.log(getKMaxNum([1, 8, 6, 5, 3, 2, 9, 4], 7));
+    </script>
+  </body>
+</html>
