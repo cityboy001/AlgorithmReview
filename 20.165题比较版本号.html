@@ -1,0 +1,70 @@
+<!--
+ * @Author: helloy 741161283@qq.com
+ * @Date: 2023-10-10 10:38:48
+ * @LastEditors: helloy 741161283@qq.com
+ * @LastEditTime: 2023-10-22 23:19:09
+ * @FilePath: \复习一下算法吧\1.归并排序.html
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <pre id="pre"></pre>
+    <script>
+      // 给定版本号 2.1.01  2.0.10 比较哪个版本号大
+      function compareVersionNum(v1, v2) {
+        if (v1 === v2) return 0;
+        const v1Str = getStrArr(v1);
+        const v1NumArr = v1Str.map((e) => numFromStrArr(e));
+        const v2Str = getStrArr(v2);
+        const v2NumArr = v2Str.map((e) => numFromStrArr(e));
+
+        let i = 0;
+        while (i < v1NumArr.length) {
+          if (v1NumArr[i] < v2NumArr[i]) {
+            return -1;
+          }
+          i++;
+        }
+
+        return 1;
+      }
+
+      function getStrArr(str1) {
+        const array = Array.from(str1);
+        const versionNum1 = new Array(3);
+        let arr = [];
+        let i = 0;
+        for (let index = 0; index < array.length; index++) {
+          if (array[index] === ".") {
+            versionNum1[i] = arr;
+            i++;
+            arr = [];
+            continue;
+          }
+          arr.push(array[index].charCodeAt() - "0".charCodeAt());
+        }
+        versionNum1[i] = arr;
+
+        return versionNum1;
+      }
+
+      function numFromStrArr(strArr) {
+        let base = strArr[strArr.length - 1];
+        for (let index = strArr.length - 2; index >= 0; index--) {
+          const ten = strArr.length - index - 1;
+          base += 10 ** ten * strArr[index];
+        }
+
+        return base;
+      }
+
+      console.log(compareVersionNum("2.1.01", "2.0.10"));
+    </script>
+  </body>
+</html>

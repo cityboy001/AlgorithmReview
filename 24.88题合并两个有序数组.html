@@ -1,0 +1,45 @@
+<!--
+ * @Author: helloy 741161283@qq.com
+ * @Date: 2023-10-10 10:38:48
+ * @LastEditors: helloy 741161283@qq.com
+ * @LastEditTime: 2023-10-23 17:30:59
+ * @FilePath: \复习一下算法吧\1.归并排序.html
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      const arr11 = [1, 2, 3, 7, 9, 0, 0, 0];
+      const arr22 = [5, 8, 10];
+      // merge 两个有序数组 m是arr11的元素长度个数 n是arr22的元素个数
+      // 0 0 0 是3个空元素位置 在不申请额外空间的情况下，把两个数组合并到arr11中去 [1, 2, 3, 5, 7, 8, 9, 10]
+
+      function mergeTwoArr(arr1 = [], arr2 = [], m, n) {
+        let i = m - 1;
+        let j = n - 1;
+        let k = m + n - 1;
+        while (j >= 0 || i >= 0) {
+          if (i === -1) {
+            arr1[k] = arr1[j--];
+          } else if (j === -1) {
+            arr1[k] = arr1[i--];
+          } else if (arr1[i] >= arr2[j]) {
+            arr1[k] = arr1[i--];
+          } else {
+            arr1[k] = arr2[j--];
+          }
+          k--;
+        }
+
+        return arr1;
+      }
+      console.log(mergeTwoArr(arr11, arr22, 5, 3));
+    </script>
+  </body>
+</html>

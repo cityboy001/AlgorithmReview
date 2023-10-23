@@ -1,0 +1,52 @@
+<!--
+ * @Author: helloy 741161283@qq.com
+ * @Date: 2023-10-10 10:38:48
+ * @LastEditors: helloy 741161283@qq.com
+ * @LastEditTime: 2023-10-22 21:50:19
+ * @FilePath: \复习一下算法吧\1.归并排序.html
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <pre id="pre"></pre>
+    <script>
+      const arr = [5, 5, 5, 10, 20, 20];
+
+      // 顾客排队付钱5/10/20元，购买5块一杯的水，能不能只用顾客的钱能找零
+      function canIGetBuck(array) {
+        const map = { 5: 0, 10: 0, 20: 0 };
+        for (let index = 0; index < array.length; index++) {
+          const money = array[index];
+          if (money === 5) {
+            map[5]++;
+          } else if (money === 10) {
+            if (map[5] === 0) {
+              return false;
+            }
+            map[5]--;
+            map[10]++;
+          } else {
+            if (map[10] > 0 && map[5] > 0) {
+              map[10]--;
+              map[5]--;
+            } else if (map[5] >= 3) {
+              map[5] -= 3;
+            } else {
+              return false;
+            }
+          }
+        }
+
+        return true;
+      }
+
+      console.log(canIGetBuck(arr));
+    </script>
+  </body>
+</html>

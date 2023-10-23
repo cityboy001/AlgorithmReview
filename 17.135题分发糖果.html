@@ -1,0 +1,56 @@
+<!--
+ * @Author: helloy 741161283@qq.com
+ * @Date: 2023-10-10 10:38:48
+ * @LastEditors: helloy 741161283@qq.com
+ * @LastEditTime: 2023-10-22 21:26:12
+ * @FilePath: \复习一下算法吧\1.归并排序.html
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <pre id="pre"></pre>
+    <script>
+      const arr = [1, 2, 3, 4, 2, 1];
+
+      function dispatchSuger(nums) {
+        // 从左往右遍历
+        // 然后从右往左遍历 去两者中教大者
+        const leftToRightMaxArr = new Array(nums.length).fill(1);
+        const RightToLeftMaxArr = new Array(nums.length).fill(1);
+        for (let index = 0; index < nums.length - 1; index++) {
+          const elementLeft = nums[index];
+          const elementRight = nums[index + 1];
+          if (elementLeft > elementRight) {
+            leftToRightMaxArr[index]++;
+          } else if (elementRight > elementLeft) {
+            leftToRightMaxArr[index + 1]++;
+          }
+        }
+
+        for (let index = nums.length - 1; index > 0; index--) {
+          const elementRight = nums[index];
+          const elementLeft = nums[index - 1];
+          if (elementRight > elementLeft) {
+            RightToLeftMaxArr[index]++;
+          } else if (elementRight < elementLeft) {
+            leftToRightMaxArr[index - 1]++;
+          }
+        }
+        const result = new Array(nums.length);
+        leftToRightMaxArr.forEach((e, index) => {
+          result[index] = Math.max(e, RightToLeftMaxArr[index]);
+        });
+
+        return result.reduce((prev, curr) => prev + curr);
+      }
+      
+      console.log(dispatchSuger(arr));
+    </script>
+  </body>
+</html>
