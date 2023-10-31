@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      const str = "3[a]2[bc]";
+      // 3[a]2[bc]
+      // s = "2[a2[d]c]"  =>  "addcaddc"
+
+      function decodeStr(str) {
+        const numStack = [];
+        const strStack = [];
+        // addc
+        let i = 0;
+        let res = "";
+        let number = 0;
+        while (i < str.length) {
+          // 获取num数字
+          if (/[1-9]/.test(str.charAt(i))) {
+            number = number * 10 + Number(str.charAt(i));
+          } else if (/[a-z]/.test(str.charAt(i))) {
+            res += str.charAt(i);
+          } else if ("[" === str.charAt(i)) {
+            numStack.push(number);
+            strStack.push(res);
+            number = 0;
+            res = "";
+          } else {
+            let popStr = strStack.pop();
+            const a = numStack.pop()
+            let copy = res
+            for (let index = 1; index < a; index++) {
+              res += copy;
+            }
+            res = popStr + res;
+          }
+          i++;
+        }
+        return res;
+      }
+
+      console.log(decodeStr("3[a]2[b3[i]]"));
+    </script>
+  </body>
+</html>

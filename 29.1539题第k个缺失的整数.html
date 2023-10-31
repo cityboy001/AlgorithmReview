@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      const arr = [2, 3, 4, 5, 9];
+      // 寻找到第k个缺失的元素
+      // k = 5, i = 0
+      // 6 - 2 - 1 = 3 得到 i = 2
+      // k - 5 + arr[i]
+      function searchingForK(arr = [], k) {
+        let left = 0;
+        let right = arr.length - 1;
+        const missFirstK = arr[0] - 1;
+        if (k <= missFirstK) {
+          return k;
+        }
+        let resIndex = 0;
+        // 找到最后一个 缺失数 小于 k的下标
+        while (left <= right) {
+          const middleIndex = Math.floor((left + right) / 2);
+          const middleMissK = arr[middleIndex] - middleIndex - 1;
+          if (middleMissK < k) {
+            if (
+              middleIndex + 1 < arr.length &&
+              arr[middleIndex + 1] - (middleIndex + 1) - 1 < k
+            ) {
+              left = middleIndex + 1;
+            } else {
+              resIndex = middleIndex;
+              break;
+            }
+          } else {
+            right = middleIndex - 1;
+          }
+        }
+
+        const missK = arr[resIndex] - resIndex - 1;
+
+        return arr[resIndex] + k - missK;
+      }
+
+      console.log(searchingForK(arr, 9));
+    </script>
+  </body>
+</html>

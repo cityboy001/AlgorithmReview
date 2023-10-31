@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      const arr = [1, 1, 1];
+      // 0, 1, 2, 3
+      function getCountKTimes(arr = [], k) {
+        const prefixSum = [0];
+
+        for (let i = 0; i < arr.length; i++) {
+          prefixSum[i+1] = prefixSum[i] + arr[i];
+        }
+
+        let count = 0;
+        const map = {};
+        for (let index = 0; index < prefixSum.length; index++) {
+          // 第一种解法 多次算出前缀和
+          // for (let j = 0; j < index; j++) {
+          //   const sum = prefixSum[index] - prefixSum[j];
+          //   if (sum === k) {
+          //     count++;
+          //   }
+          // }
+
+          // 第二种解法
+          const diff = prefixSum[index] - k;
+          if (map[diff] !== undefined) {
+            // 查看有多少个区间的和 === k
+            count += map[diff];
+          }
+          map[prefixSum[index]] = (map[prefixSum[index]] || 0) + 1;
+          
+        }
+
+        return count;
+      }
+
+      console.log(getCountKTimes(arr, 2));
+    </script>
+  </body>
+</html>

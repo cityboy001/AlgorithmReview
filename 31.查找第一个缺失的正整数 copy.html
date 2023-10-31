@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      const arr = [1];
+      // => 2
+      function getFirstMissedNum(arr = []) {
+        const n = arr.length;
+        // 把值-1转换
+        for (let index = 0; index < n; index++) {
+          // 先把0和负数干到 不存在的区间
+          const element = arr[index];
+          if (element <= 0) {
+            arr[index] = n + 1;
+          }
+        }
+        for (let index = 0; index < n; index++) {
+          // 标记下标对应的值已经出现
+          const element = Math.abs(arr[index]);
+          const i = element - 1;
+          if (i < n) {
+            arr[i] = -Math.abs(arr[i]);
+          }
+        }
+        let i = 1;
+        while (i - 1 < n) {
+          // 最后查找哪一个值没有出现
+          if (arr[i - 1] > 0) {
+            return i;
+          }
+          i++;
+        }
+
+        return i;
+      }
+
+      console.log(getFirstMissedNum(arr));
+    </script>
+  </body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // [1, 2, 4, 9, 12, 55, 66, 777, 778, 999];
+      const arr = [777, 778, 999, 1, 2, 4, 9, 12, 55, 66];
+      // 寻找到第一个===777的元素
+      function search(arr = [], target) {
+        let left = 0;
+        let right = arr.length - 1;
+        while (left <= right) {
+          const index = Math.floor((left + right) / 2);
+          const middle = arr[index];
+          if (arr[index] === target) {
+            return index;
+          }
+          if (arr[left] < middle) {
+            // left 到 middle 左半部分有序的，先看看在不在左边的有序空间内，不在，则肯定在右半部分
+            if (arr[left] <= target && target < middle) {
+              right = index - 1;
+            } else {
+              left = index + 1;
+            }
+          } else {
+            if (middle < target && target <= arr[right]) {
+              left = index + 1;
+            } else {
+              right = index - 1;
+            }
+          }
+        }
+
+        return -1;
+      }
+
+      console.log(search(arr, 77));
+    </script>
+  </body>
+</html>
