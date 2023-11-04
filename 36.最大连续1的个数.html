@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      const s = [1, 0, 1, 1, 1];
+      // 得到 连续1的子串的长度 ->3
+
+      const getMaxChild = function (arr = []) {
+        let left = 0;
+        let right = 0;
+        let result = 0;
+        while (right < arr.length) {
+          if (arr[right] === 1) {
+            result = Math.max(result, right - left + 1);
+          } else {
+            left = right + 1;
+          }
+          right++;
+        }
+
+        return result;
+      };
+
+    </script>
+  </body>
+</html>

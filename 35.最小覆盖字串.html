@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      const s = "ADOBECODEBANC";
+              // 0123456789
+      const t = "ABC";
+      // 得到 s字符串 中能包括 t字符串 的最小子串
+
+      const getMinCoverStr = function (str = "", t = "") {
+        const ACode = "A".charCodeAt();
+        let left = 0;
+        let right = 0;
+        let minLength = str.length+1
+        const parentArr = new Array(54).fill(0);
+        let result = "";
+
+        while (right <= str.length && left <= right) {
+          if (contains(parentArr, t)) {
+            if (right - left < minLength) {
+              console.log('right - left: ', left , right);
+              minLength = right - left;
+              result = str.substring(left, right);
+            }
+            parentArr[str.charCodeAt(left) - ACode]--;
+            left++;
+          } else {
+            parentArr[str.charCodeAt(right) - ACode]++;
+            right++;
+          }
+        }
+
+        return result;
+      };
+
+      function contains(parent = [], child = "") {
+        const copy = parent.slice();
+        const ACode = "A".charCodeAt();
+        for (let index = 0; index < child.length; index++) {
+          const i = child.charCodeAt(index) - ACode;
+          copy[i]--;
+          if (copy[i] < 0) {
+            return false;
+          }
+        }
+
+        return true;
+      }
+      
+      console.log("getMinCoverStr ", getMinCoverStr(s, t));
+    </script>
+  </body>
+</html>
