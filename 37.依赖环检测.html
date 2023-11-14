@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      const list = [
+        {
+          name: "a",
+          dependencies: {
+            b: "^1.0.0",
+          },
+        },
+        {
+          name: "b",
+          dependencies: {
+            c: "^1.0.0",
+          },
+        },
+        {
+          name: "c",
+          dependencies: {
+            a: "^1.0.0",
+          },
+        },
+      ];
+      const hasCircleDependencies = (arr) => {
+        const map = {};
+        arr.forEach((e) => {
+          const keys = Object.keys(e.dependencies);
+          map[e.name] = keys;
+        });
+        let hasCircle = false;
+
+        const hasVisited = {};
+
+        const dfs = (name, prev) => {
+          hasVisited[name] = true;
+          const dps = map[name];
+          if (!Array.isArray(dps)) return;
+          dps.forEach((key) => {
+            if (!hasVisited[key]) {
+              dfs(key, name);
+            } else {
+              if (key !== prev) {
+                hasCircle = true;
+              }
+            }
+          });
+        };
+
+        arr.forEach((e) => {
+          if (!hasVisited[e.name]) {
+            dfs(e.name, e.name);
+          }
+        });
+
+        return hasCircle;
+      };
+
+      console.log(hasCircleDependencies(list));
+    </script>
+  </body>
+</html>
